@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Newsforest.android.Newsforest.R;
@@ -62,7 +64,8 @@ import com.Newsforest.android.Newsforest.Data.NewsJungle_contract.Technology_New
 import com.Newsforest.android.Newsforest.Data.NewsJungle_contract.Gaming_News_entry;
 import com.Newsforest.android.Newsforest.Data.NewsJungle_contract.Music_News_entry;
 import com.Newsforest.android.Newsforest.Data.NewsJungle_contract.Cricket_News_entry;
-
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 
 public class splash_screen extends AppCompatActivity    {
@@ -71,6 +74,8 @@ public class splash_screen extends AppCompatActivity    {
     private String CAT;
     private Context context;
     private String url;
+    private ImageView ForestImage;
+    private TextView TextVersion;
 
     Context con;
     //private Cursor cursor,cur;
@@ -89,6 +94,9 @@ public class splash_screen extends AppCompatActivity    {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        ForestImage=(ImageView)findViewById(R.id.forest_id);
+        TextVersion=(TextView)findViewById(R.id.app_version);
+
         CAT="National";
 
         context=splash_screen.this;
@@ -112,7 +120,14 @@ public class splash_screen extends AppCompatActivity    {
                 }
             }, SPLASH_DISPLAY_LENGTH);
 
-
+        YoYo.with(Techniques.ZoomInUp)
+                .duration(2000)
+                .repeat(0)
+                .playOn(ForestImage);
+        YoYo.with(Techniques.FadeInUp)
+                .duration(2000)
+                .repeat(0)
+                .playOn(TextVersion);
     }
 
 

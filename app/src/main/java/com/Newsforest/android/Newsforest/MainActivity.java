@@ -16,11 +16,15 @@ import android.os.Bundle;
 import android.app.ProgressDialog;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Layout;
 import android.util.Log;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,9 +35,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -61,8 +70,7 @@ public class MainActivity extends AppCompatActivity
     //RecyclerView recyclerView;
     //ProgressBar progressBar;
     private ProgressDialog mProgressDialog ;
-
-
+    private SwipeRefreshLayout Main_Layout;
     public String API_URL = "";
     private Context context;
     private Bitmap bmp;
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity
     public String mError_reason;
     private String tablename,columnttitle,columndesription,columnimage,columnurl;
     private News_dbhelper mdbHelper;
+    private FloatingActionButton fab;
     public String CAT ;// private AdView madview;
     //private RecyclerView recyclerView;
    // private InterstitialAd mInterstitialAd;
@@ -84,9 +93,10 @@ public class MainActivity extends AppCompatActivity
                //"Loading...Please wait...", true, false);;
 
         //mProgressDialog.show();
+       // supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-
-        Toast.makeText(MainActivity.this,"Please refresh if news was not dispalying",Toast.LENGTH_LONG).show();
+        Main_Layout=(SwipeRefreshLayout) findViewById(R.id.Main_layout);
+        //Toast.makeText(MainActivity.this,"Please refresh if news was not dispalying",Toast.LENGTH_LONG).show();
         mProgressDialog=new ProgressDialog(MainActivity.this);
         mProgressDialog.setMessage(" Loading...");
         mProgressDialog.setIndeterminate(false);
@@ -97,8 +107,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar;
         toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.refreshgreen));
+       // fab = findViewById(R.id.fab);
+        //fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.refreshgreen));
         DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -228,12 +238,15 @@ public class MainActivity extends AppCompatActivity
 
         //task.execute();
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+              /*  YoYo.with(Techniques.RotateIn)
+                        .duration(3000)
+                        .repeat(0)
+                        .playOn(fab);
                 splash_screen splash=new splash_screen();
                 splash.Inserting_records(API_URL,CAT,mdbHelper,context);
-
                 thread.run();
 
                 //gatherInformation(mdbHelper);
@@ -242,7 +255,7 @@ public class MainActivity extends AppCompatActivity
 
 
             }
-        });
+        });*/
 
 
 
@@ -312,7 +325,37 @@ public class MainActivity extends AppCompatActivity
         t.schedule(task,20000);
         */
 
+        /*Main_Layout.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeTop() {
+                Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
+                splash_screen splash=new splash_screen();
+                splash.Inserting_records(API_URL,CAT,mdbHelper,context);
+                thread.run();
+            }
+            public void onSwipeRight() {
+                //onswipeleft();
+                Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                //onswiperight();
+                Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeBottom() {
+                Toast.makeText(MainActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+            }
 
+        });*/
+
+        Main_Layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
+                splash_screen splash=new splash_screen();
+                splash.Inserting_records(API_URL,CAT,mdbHelper,context);
+                thread.run();
+
+            }
+        });
     }
 
 
@@ -369,6 +412,7 @@ public class MainActivity extends AppCompatActivity
                     Log.d("size of mModellist ", "" + mModelList.size());
                     mProgressDialog.dismiss();
                     recyclerView.setAdapter(new Adapter(MainActivity.this, mModelList));
+                    Main_Layout.setRefreshing(false);
                     Toast.makeText( MainActivity.this,"News was refreshed\n please refresh if was not displaying", Toast.LENGTH_SHORT).show();
 
                 }catch (NullPointerException e){e.printStackTrace();}
@@ -540,4 +584,73 @@ public class MainActivity extends AppCompatActivity
         }
         return str;
     } */
+
+    /*public class OnSwipeTouchListener implements View.OnTouchListener {
+
+        private final GestureDetector gestureDetector;
+
+        public OnSwipeTouchListener (Context ctx){
+            gestureDetector = new GestureDetector(ctx, new GestureListener());
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return gestureDetector.onTouchEvent(event);
+        }
+
+        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                boolean result = false;
+                try {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) {
+                                onSwipeRight();
+                            } else {
+                                onSwipeLeft();
+                            }
+                            result = true;
+                        }
+                    }
+                    else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            onSwipeBottom();
+                        } else {
+                            onSwipeTop();
+                        }
+                        result = true;
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return result;
+            }
+        }
+
+        public void onSwipeRight() {
+        }
+
+        public void onSwipeLeft() {
+        }
+
+        public void onSwipeTop() {
+        }
+
+        public void onSwipeBottom() {
+        }
+    }*/
+
+
 }

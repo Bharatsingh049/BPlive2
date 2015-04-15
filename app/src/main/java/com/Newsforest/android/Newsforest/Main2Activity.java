@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class Main2Activity extends AppCompatActivity {
     private List<Matches> mModelList1 = new ArrayList<>();
     RecyclerView recyclerView1;
     public String match_API;
+    private SwipeRefreshLayout Main_Layout;
     public String mError_reason;
    // private InterstitialAd mInterstitialAd;
     //public var d = new Date('2015-03-04T00:00:00.000Z');
@@ -65,6 +67,7 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Main_Layout=(SwipeRefreshLayout)findViewById(R.id.content_main2);
      //   mInterstitialAd=new InterstitialAd(Main2Activity.this);
        /* mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -84,13 +87,14 @@ public class Main2Activity extends AppCompatActivity {
         recyclerView1.setHasFixedSize(true);
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
         match_API = getIntent().getStringExtra("URL");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gatherInformation(match_API);
             }
         });
+        */
         gatherInformation(match_API);
   /*      AdView madview = findViewById(R.id.match_list_Ads);
         AdRequest adRequest= new AdRequest.Builder().build();
@@ -165,6 +169,15 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),String.format("onAdFailedToLoad(%s)",mError_reason),Toast.LENGTH_LONG).show();}
         });
 */
+
+        Main_Layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(Main2Activity.this, "top", Toast.LENGTH_SHORT).show();
+                gatherInformation(match_API);
+
+            }
+        });
     }
 
     @Override
@@ -229,7 +242,7 @@ public class Main2Activity extends AppCompatActivity {
                             }
 
                             recyclerView1.setAdapter(new MyAdapter(Main2Activity.this,mModelList1));
-
+                        Main_Layout.setRefreshing(false);
 
 
                     }catch (NullPointerException ex){
@@ -243,6 +256,7 @@ public class Main2Activity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     mProgressDialog.dismiss();
+                    Main_Layout.setRefreshing(false);
                     if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                         Toast.makeText(Main2Activity.this, "Failed to fetch data." +
                                 " Please check your network connection", Toast.LENGTH_SHORT).show();

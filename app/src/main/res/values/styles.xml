@@ -6,21 +6,25 @@
         <item name="colorPrimary">#1B5E20</item>
         <item name="colorPrimaryDark">#1B5E20</item>
         <item name="colorAccent">#795548</item>
+
     </style>
+
 
 
     <style name="AppTheme.NoActionBar" >
         <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+
         <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
         <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">

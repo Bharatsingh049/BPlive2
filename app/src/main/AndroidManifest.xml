@@ -23,10 +23,8 @@
         <activity
             android:name="com.Newsforest.android.Newsforest.MainActivity"
             android:label="News Jungle"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name="com.Newsforest.android.Newsforest.Main4Activity"
             android:label="News Jungle"

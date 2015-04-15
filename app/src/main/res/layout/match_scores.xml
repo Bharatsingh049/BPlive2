@@ -10,19 +10,57 @@
     android:padding="5dp"
     >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="team2"
-        android:textSize="20dp"
-        android:id="@+id/team2"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="team2"
+
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:paddingLeft="10dp"
+            android:textSize="20dp"
+            android:id="@+id/team2"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="51dp"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="LIVE"
+            android:background="@drawable/layout_bg"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/LIVE"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:paddingLeft="10dp"
         android:layout_height="wrap_content"
         android:text="  VS  "
         />
     <TextView
         android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="team1"
@@ -36,28 +74,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="date"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:paddingLeft="10dp"
         android:textSize="15dp"
         android:id="@+id/date"
         android:layout_margin="5dp"
         />
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint=""
-            android:textSize="24dp"
-            android:textStyle="bold"
-        android:text="LIVE"
-            android:background="@drawable/layout_bg"
-           android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-            android:textColor="#000000"
-            android:id="@+id/LIVE"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-        />
+
     </LinearLayout>
 </LinearLayout>

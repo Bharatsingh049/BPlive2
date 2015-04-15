@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.Newsforest.android.Newsforest.R;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -71,6 +73,10 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 //Intent i = new Intent(mContext , Main4Activity.class);
                 // m4a.setwebview(mModelList.get(position).getUrl()); //<----This is wrong way of doing you should pass the data to the next activity then show it from there
                 //i.putExtra("url",mModelList.get(position).getUrl());
+                /*YoYo.with(Techniques.SlideInRight)
+                        .duration(1000)
+                        .repeat(0)
+                        .playOn(((Item)holder).imageView);*/
                 Intent cameraIntent = new Intent(mContext, Main4Activity.class);
                 String APIurl = mModelList.get(position).getUrl();
                 cameraIntent.putExtra("URL", APIurl)
