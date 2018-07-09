@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BP live</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main4">Main4Activity</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="AdUnitIdInterstitialTestAd">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="AdUnitIdBannerTestAd">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="title_activity_splash_screen">splash_screen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

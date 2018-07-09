@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_national"
+            android:icon="@drawable/national"
+            android:title="National"
+            android:visible="true"/>
+
+        <item
+            android:id="@+id/nav_international"
+            android:icon="@drawable/international"
+            android:title="International" />
+        <item
+            android:id="@+id/nav_business"
+            android:icon="@drawable/savings"
+            android:title="Business" />
+        <item
+            android:id="@+id/sports"
+            android:icon="@drawable/sports"
+            android:title="Sports"
+            android:state_checked="true"
+            android:color="@color/colorPrimary"
+            android:backgroundTint="#7f7f7f"/>
+        <item
+            android:id="@+id/nav_tech"
+            android:icon="@drawable/tech"
+            android:title="Technology" />
+        <item
+            android:id="@+id/nav_Cricket"
+            android:icon="@drawable/cricket"
+            android:title="Cricket"/>
+        <item
+            android:id="@+id/nav_Music"
+            android:icon="@drawable/music"
+            android:title="Music"/>
+        <item
+            android:id="@+id/nav_Gaming"
+            android:icon="@mipmap/game"
+            android:title="Gaming"
+            />
+        <item
+            android:id="@+id/nav_Matches"
+            android:icon="@mipmap/cricket"
+            android:title="Live Cricket Scores"
+            />
+    </group>
+
+    <item android:title="About">
+        <menu>
+
+            <item
+                android:id="@+id/nav_dev"
+                android:icon="@drawable/developer"
+                android:title="About Developer"
+                android:state_checked="true"
+                android:color="@color/colorPrimary"/>
+
+
+        </menu>
+    </item>
+
+</menu>

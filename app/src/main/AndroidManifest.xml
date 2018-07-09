@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toandroid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.Newsforest.android.Newsforest">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
+        android:allowBackup="true"
+        android:icon="@drawable/newforest12png"
+        android:label="News Jungle"
+        android:logo="@drawable/newforest12png"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="android.support.VERSION"
+            android:value="26.1.0"
+            tools:replace="android:value" />
+
+        <activity
+            android:name="com.Newsforest.android.Newsforest.MainActivity"
+            android:label="News Jungle"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <activity
+            android:name="com.Newsforest.android.Newsforest.Main4Activity"
+            android:label="News Jungle"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.Newsforest.android.Newsforest.Main2Activity"
+            android:label="Match List"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.Newsforest.android.Newsforest.Main3Activity"
+            android:label="Live Score"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.Newsforest.android.Newsforest.splash_screen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
