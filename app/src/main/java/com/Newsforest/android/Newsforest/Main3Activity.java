@@ -6,8 +6,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +28,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.Newsforest.android.Newsforest.R;
-import com.google.android.gms.ads.AdListener;
+/*import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.AdView;*/
 
 import org.json.JSONObject;
 
@@ -36,11 +38,10 @@ import java.util.Collections;
 
 public class Main3Activity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
-    public TextView score;
-    public TextView require;
-    public TextView scoret1;
-    public TextView scoret2;
+    private TextView score,require,scoret1,scoret2,Date,Time;
     public String mError_reason;
+    private ImageView Winner1,Winner2;
+    private Matches model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +52,26 @@ public class Main3Activity extends AppCompatActivity {
         require =(TextView) findViewById(R.id.require);
         scoret1 =(TextView) findViewById(R.id.team1score);
         scoret2 =(TextView) findViewById(R.id.team2score);
+        Winner1=findViewById(R.id.winner1score);
+        Winner2=findViewById(R.id.winner2score);
+        Date=findViewById(R.id.Match_date);
+        Time=findViewById(R.id.Match_Time);
         String UIP ;
         String t1,t2;
-        t1=getIntent().getStringExtra("t1");
-        t2=getIntent().getStringExtra("t2");
-        UIP=getIntent().getStringExtra("UI");
+        model=(Matches)getIntent().getSerializableExtra("Matches");
+        if (TextUtils.equals(model.getWinner(),model.getTeam1())){
+            Winner1.setVisibility(View.VISIBLE);
+        }else if (TextUtils.equals(model.getWinner(),model.getTeam2())){
+            Winner2.setVisibility(View.VISIBLE);
+        }else {
+            Winner1.setVisibility(View.GONE);
+            Winner2.setVisibility(View.GONE);
+        }
+        t1=model.getTeam1();
+        t2=model.getTeam2();
+        UIP=model.getUnique_id()+"";
+        Date.setText(model.getDate());
+        Time.setText(model.getTime());
         final String url="http://cricapi.com/api/cricketScore/?apikey=37UZslM2YmOIsHPI5pmnD8Nz5ki1&unique_id="+UIP;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +141,7 @@ public class Main3Activity extends AppCompatActivity {
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                        Log.d( "onResponse: ",e.toString());
                         Toast.makeText(Main3Activity.this, "please retry", Toast.LENGTH_LONG).show();
                     }
 

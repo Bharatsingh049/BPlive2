@@ -21,25 +21,77 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="team2"
+            android:hint="team1"
             android:textStyle="bold"
             android:textSize="25dp"
-            android:id="@+id/team2score"/>
+            android:layout_weight="1"
+            android:id="@+id/team1score"/>
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:id="@+id/winner1score"
+                android:src="@drawable/crowns"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  VS  "
             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <TextView
+            android:layout_weight="1"
             android:textSize="25dp"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="team1"
-            android:id="@+id/team1score"/>
+            android:hint="team2"
+            android:id="@+id/team2score"/>
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:id="@+id/winner2score"
+                android:src="@drawable/crowns"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="date"
+        android:textStyle="bold"
+
+        android:textSize="15dp"
+        android:id="@+id/Match_date"
+        android:layout_margin="5dp"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Time"
+            android:textStyle="bold"
+
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            android:id="@+id/Match_Time"
+            android:layout_margin="5dp"
+            />
     </LinearLayout>
     <TextView
         android:layout_margin="5dp"

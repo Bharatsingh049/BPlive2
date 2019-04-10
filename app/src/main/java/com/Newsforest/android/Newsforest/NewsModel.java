@@ -3,20 +3,21 @@ package com.Newsforest.android.Newsforest;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Bharat on 4/1/2017.
  */
-public class NewsModel {
-    public String author;
-    public String Description;
-    public String title;
-    public String url;
-    public String image2url;
+public class NewsModel implements Serializable {
+    private String author;
+    private String Description;
+    private String title;
+    private String url;
+    private String image2url;
     private String[] DateArray=new String[3];
     private String DateString;
-    public Bitmap Imagebitmap;
+    private Bitmap Imagebitmap;
 
     public NewsModel() {
     }

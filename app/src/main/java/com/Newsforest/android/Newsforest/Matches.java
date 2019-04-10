@@ -1,16 +1,58 @@
 package com.Newsforest.android.Newsforest;
 
+import java.io.Serializable;
+
 /**
  * Created by Bharat on 4/8/2017.
  */
-public class Matches {
-    public int unique_id;
-    public String team2;
-    public String team1;
-    public String matchStarted;
-    public String date;
+public class Matches implements Serializable {
+    private int unique_id;
+    private String team2;
+    private String team1;
+    private String matchStarted;
+    private String date;
+    private String toss_Winner;
+    private String type;
+    private String time;
+    private String Winner;
 
     public Matches() {
+    }
+
+    public String getWinner() {
+        return Winner;
+    }
+
+    public void setWinner(String winner) {
+        Winner = winner;
+    }
+
+    public int getUnique_id() {
+        return unique_id;
+    }
+
+    public String getToss_Winner() {
+        return toss_Winner;
+    }
+
+    public void setToss_Winner(String toss_Winner) {
+        this.toss_Winner = toss_Winner;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Matches(int unique_id, String team2 , String team1, String matchStarted, String date) {
@@ -22,9 +64,7 @@ public class Matches {
         this.date=date;
     }
 
-    public int getunique_id() {
-        return unique_id;
-    }
+
 
     public void setUnique_id(int unique_id) {
         this.unique_id= unique_id;

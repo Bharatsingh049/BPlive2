@@ -34,6 +34,8 @@ public class Main4Activity extends AppCompatActivity{
 
 public String mError_reason;
 public ProgressDialog mdialog;
+private NewsModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +46,11 @@ public ProgressDialog mdialog;
         mdialog.show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final String ApIurl ;
-        ApIurl = getIntent().getStringExtra("URL");
-        final String desc = getIntent().getStringExtra("desc");
-        Log.e("URL>>>>",ApIurl);
+        model=(NewsModel)getIntent().getSerializableExtra("NewsModel");
+        //final String ApIurl ;
+        //ApIurl = getIntent().getStringExtra("URL");
+        //final String desc = getIntent().getStringExtra("desc");
+        Log.e("URL>>>>",model.getUrl());
         //Intent browser= new Intent(Intent.ACTION_VIEW, Uri.parse(ApIurl));
         //startActivity(browser);
        // new newsitem().execute(ApIurl);
@@ -62,7 +65,7 @@ public ProgressDialog mdialog;
                 mdialog.dismiss();
             }
         });
-        myWebView.loadUrl(ApIurl);
+        myWebView.loadUrl(model.getUrl());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +75,7 @@ public ProgressDialog mdialog;
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, ApIurl+" " + desc);
+                intent.putExtra(Intent.EXTRA_TEXT, model.getUrl()+" " + model.getDescription());
                 startActivity(intent);
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                   //      .setAction("Action", null).show();

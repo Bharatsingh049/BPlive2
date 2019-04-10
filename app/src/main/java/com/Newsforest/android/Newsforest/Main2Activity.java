@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -220,6 +222,7 @@ public class Main2Activity extends AppCompatActivity {
                     int mDay = cc.get(Calendar.DAY_OF_MONTH);
                     //var localTime = moment().format('YYYY-MM-DD'); // store localTime
                     //var proposedDate = localTime + "T00:00:00.000Z";
+                    Matches datalist1 ;
                     try{
                         JSONObject jObject=new JSONObject(response);
                         //String status=jObject.getString("status");
@@ -231,13 +234,36 @@ public class Main2Activity extends AppCompatActivity {
                                 JSONObject jsonobject=jsonArray.getJSONObject(i);
 
                                 Log.e("InnerData: ",jsonobject.toString());
-                                Log.e("Date: ",jsonobject.getString("date"));
-                                Matches datalist1 = new Matches();
+                                Log.e("Date: ",jsonobject.getString("dateTimeGMT"));
+                                String Match_Started=jsonobject.getString("matchStarted")
+                                ,toss_W
+                                ,match_type=jsonobject.getString("type")
+                                ,Date=jsonobject.getString("dateTimeGMT").substring(0,10)
+                                ,Time=jsonobject.getString("dateTimeGMT").substring(11,19)
+                                ,Winner;
+
+                                datalist1 = new Matches();
                                 datalist1.setUnique_id(jsonobject.getInt("unique_id"));
                                 datalist1.setTeam2(jsonobject.getString("team-2"));
                                 datalist1.setTeam1(jsonobject.getString("team-1"));
-                                datalist1.setMatchStarted(jsonobject.getString("matchStarted"));
-                                datalist1.setDate(jsonobject.getString("date"));
+                                datalist1.setMatchStarted(Match_Started);
+                                datalist1.setDate(Date);
+                                if (TextUtils.equals(Match_Started,"true")){
+                                    datalist1.setToss_Winner(jsonobject.getString("toss_winner_team"));
+                                    //datalist1.setWinner(jsonobject.getString("winner_team"));
+                                    toss_W=jsonobject.getString("toss_winner_team");
+
+                                }
+
+                                datalist1.setType(match_type);
+                                datalist1.setTime(Time);
+                                try{
+                                    Winner=jsonobject.getString("winner_team");
+                                    datalist1.setWinner(Winner);
+                                }catch (JSONException e){
+                                    datalist1.setWinner("Null");
+                                }
+
                                 mModelList1.add(datalist1);
                             }
 
@@ -246,9 +272,16 @@ public class Main2Activity extends AppCompatActivity {
 
 
                     }catch (NullPointerException ex){
-                        Log.e("Error ",ex.toString());
+                        Log.d("Error ",ex.toString());
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        if (TextUtils.equals("org.json.JSONException: No value for winner_team",e.toString())){
+                            //throw e;
+
+                        }else {
+                            e.printStackTrace();
+                            Log.d( "onResponse: ",e.toString());
+                        }
+
                     }
 
                 }

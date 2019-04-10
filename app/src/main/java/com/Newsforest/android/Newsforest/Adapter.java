@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by Bharat on 3/27/2017.
  */
-public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class Adapter extends RecyclerView.Adapter<Adapter.Item> {
     Context mContext;
     List<NewsModel> mModelList;
     int day,month,year;
@@ -49,7 +49,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Item onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View row = inflater.inflate(R.layout.costume_row, parent, false);
@@ -62,26 +62,26 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final Item holder, final int position) {
        /* try{ URL ur=new URL(mModelList.get(position).getimage());
             bmp=BitmapFactory.decodeStream(ur.openConnection().getInputStream());
         }catch (IOException e){e.printStackTrace();}
        */ //byte[] byteimage1 = getBytes(bmp);
         DateArray=mModelList.get(position).getDateArray();
         Log.d("size of mModellist ",DateArray.length+"");
-        ((Item) holder).textView.setText(mModelList.get(position).getTitle());
-        ((Item) holder).TV.setText(mModelList.get(position).getDescription());
+        holder.textView.setText(mModelList.get(position).getTitle());
+        holder.TV.setText(mModelList.get(position).getDescription());
         //((Item) holder).imageView.setImageBitmap(mModelList.get(position).getbitmapimage());
-        Glide.with(mContext).load(mModelList.get(position).getimage()).placeholder(R.drawable.loadjungle).crossFade().into(((Item) holder).imageView);
+        Glide.with(mContext).load(mModelList.get(position).getimage()).placeholder(R.drawable.loadjungle).crossFade().into(holder.imageView);
 
         if (TextUtils.isEmpty(mModelList.get(position).getDateString())  ||  TextUtils.equals(mModelList.get(position).getDateString(),"null")){
-            ((Item) holder).flame.setVisibility(View.INVISIBLE);
+            holder.flame.setVisibility(View.INVISIBLE);
         }else if(year!=Integer.parseInt(DateArray[0])   &&  month!=Integer.parseInt(DateArray[1])   &&    day!=Integer.parseInt(DateArray[2])){
-            ((Item) holder).flame.setVisibility(View.INVISIBLE);
+            holder.flame.setVisibility(View.INVISIBLE);
         }
 
         // ((Item)holder).imageView.setImageBitmap(getBitmapfromUrl(mModelList.get(position).getUrltoimage()));
-        ((Item) holder).itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -94,10 +94,8 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         .repeat(0)
                         .playOn(((Item)holder).imageView);*/
                 Intent cameraIntent = new Intent(mContext, Main4Activity.class);
-                String APIurl = mModelList.get(position).getUrl();
-                cameraIntent.putExtra("URL", APIurl)
-                        .putExtra("desc", mModelList.get(position).getDescription())
-                        .putExtra("title", mModelList.get(position).getTitle());
+                //String APIurl = mModelList.get(position).getUrl();
+                cameraIntent.putExtra("NewsModel", mModelList.get(position));
                 //cameraIntent.setAction(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 mContext.startActivity(cameraIntent);
 
@@ -151,7 +149,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }*/
 
-    public Bitmap getBitmapfromUrl(String imageUrl) {
+    /*public Bitmap getBitmapfromUrl(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -173,5 +171,5 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         return stream.toByteArray();
-    }
+    }*/
 }
