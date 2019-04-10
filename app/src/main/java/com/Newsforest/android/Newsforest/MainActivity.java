@@ -15,9 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Layout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -78,10 +80,10 @@ public class MainActivity extends AppCompatActivity
 
     private ActionBarDrawerToggle toggle;
     public String mError_reason;
-    private String tablename,columnttitle,columndesription,columnimage,columnurl;
+    private String tablename,columnttitle,columndesription,columnimage,columnurl,colummdate;
     private News_dbhelper mdbHelper;
     private FloatingActionButton fab;
-    public String CAT ;// private AdView madview;
+    private String CAT ;// private AdView madview;
     //private RecyclerView recyclerView;
    // private InterstitialAd mInterstitialAd;
 
@@ -100,7 +102,8 @@ public class MainActivity extends AppCompatActivity
         mProgressDialog=new ProgressDialog(MainActivity.this);
         mProgressDialog.setMessage(" Loading...");
         mProgressDialog.setIndeterminate(false);
-        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.show();
 
        // mInterstitialAd= new InterstitialAd(MainActivity.this);
 
@@ -146,205 +149,43 @@ public class MainActivity extends AppCompatActivity
 
 
         NavigationView navigationView =  findViewById(R.id.nav_view);
-        context=MainActivity.this;
+        context=getApplicationContext();
         CAT="National";
         Log.d("Cat before = ",CAT);
         API_URL = getIntent().getStringExtra("URL");
         CAT=getIntent().getStringExtra("Cat");
-        Log.d("Cat after= ",CAT);
-        mdbHelper=new News_dbhelper(this);
-        if(API_URL==null){API_URL=" https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";}
-        if(!("National".equals(CAT))){
-            splash_screen splash=new splash_screen();
-            splash.Inserting_records(API_URL,CAT,mdbHelper,context);
-           // gatherInformation(mdbHelper);
-            }
-        toolbar.setTitle(CAT);
-        setSupportActionBar(toolbar);
-
-        if("National".equals(CAT)){
-            tablename= National_News_entry.Table_Name;
-            columnttitle=National_News_entry.Column_News_Title;
-            columndesription=National_News_entry.Column_News_Description;
-            columnimage=National_News_entry.Column_News_Image;
-            columnurl=National_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=National_News_entry.National_News_id;
-        }
-        if("International".equals(CAT)){
-            tablename= International_News_entry.Table_Name;
-            columnttitle=International_News_entry.Column_News_Title;
-            columndesription=International_News_entry.Column_News_Description;
-            columnimage=International_News_entry.Column_News_Image;
-            columnurl=International_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=International_News_entry.International_News_id;
-        }
-        if("Sports".equals(CAT)){
-            tablename= Sports_News_entry.Table_Name;
-            columnttitle=Sports_News_entry.Column_News_Title;
-            columndesription=Sports_News_entry.Column_News_Description;
-            columnimage=Sports_News_entry.Column_News_Image;
-            columnurl=Sports_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=Sports_News_entry.Sports_News_id;
-        }
-        if("Business".equals(CAT)){
-            tablename= Business_News_entry.Table_Name;
-            columnttitle=Business_News_entry.Column_News_Title;
-            columndesription=Business_News_entry.Column_News_Description;
-            columnimage=Business_News_entry.Column_News_Image;
-            columnurl=Business_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=Business_News_entry.Business_News_id;
-        }
-        if("Technology".equals(CAT)){
-            tablename= Technology_News_entry.Table_Name;
-            columnttitle=Technology_News_entry.Column_News_Title;
-            columndesription=Technology_News_entry.Column_News_Description;
-            columnimage=Technology_News_entry.Column_News_Image;
-            columnurl=Technology_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=Technology_News_entry.Technology_News_id;
-        }
-        if("Cricket".equals(CAT)){
-            tablename= Cricket_News_entry.Table_Name;
-            columnttitle=Cricket_News_entry.Column_News_Title;
-            columndesription=Cricket_News_entry.Column_News_Description;
-            columnimage=Cricket_News_entry.Column_News_Image;
-            columnurl=Cricket_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=Cricket_News_entry.Cricket_News_id;
-        }
-        if("Music".equals(CAT)){
-            tablename= Music_News_entry.Table_Name;
-            columnttitle=Music_News_entry.Column_News_Title;
-            columndesription=Music_News_entry.Column_News_Description;
-            columnimage=Music_News_entry.Column_News_Image;
-            columnurl=Music_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=Music_News_entry.Music_News_id;
-        }
-        if("Gaming".equals(CAT)){
-            tablename= Gaming_News_entry.Table_Name;
-            columnttitle=Gaming_News_entry.Column_News_Title;
-            columndesription=Gaming_News_entry.Column_News_Description;
-            columnimage=Gaming_News_entry.Column_News_Image;
-            columnurl=Gaming_News_entry.Column_News_Url;
-            thread.run();
-            //columnid=Gaming_News_entry.Gaming_News_id;
-        }
-
-
-        //task.execute();
-
-        /*fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              /*  YoYo.with(Techniques.RotateIn)
-                        .duration(3000)
-                        .repeat(0)
-                        .playOn(fab);
-                splash_screen splash=new splash_screen();
-                splash.Inserting_records(API_URL,CAT,mdbHelper,context);
-                thread.run();
-
-                //gatherInformation(mdbHelper);
-                //task.execute();
-
-
-
-            }
-        });*/
-
-
-
-
-        navigationView.setNavigationItemSelectedListener(this);
-
-
-
-
+       // Log.d("Cat after= ",CAT);
+        initColumns();
         Log.d("Cat = ",columndesription);
         //Log.d("Cat before = ",columnid);
         Log.d("Cat before = ",columnttitle);
         Log.d("Cat before = ",columnurl);
         Log.d("Table name = ",tablename);
-
-/*
-       AdView madview = findViewById(R.id.forest_ad);
-        AdRequest adRequest= new AdRequest.Builder().build();
-        madview.loadAd(adRequest);
-
-
-
-       Timer t= new Timer();
-        mInterstitialAd.setAdUnitId("ca-app-pub-8791947476117487/8226369149");
-        TimerTask task= new TimerTask() {
-            @Override
-            public void run() {
-                if (mInterstitialAd != null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AdRequest adr = new AdRequest.Builder().build();
-                            mInterstitialAd.loadAd(adr);
-
-                            mInterstitialAd.setAdListener(new AdListener() {
-                                @Override
-                                public void onAdClosed() {
-
-                                }
-
-                                @Override
-                                public void onAdLoaded() {
-                                    //mAdIsLoading = false;
-                                    super.onAdLoaded();
-                                    Log.d("onAdLoaded ", "" + 1);
-                                    if (mInterstitialAd != null) {
-                                        try {
-                                            mInterstitialAd.show();
-                                        } catch (NullPointerException e) {
-                                            throw e;
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onAdFailedToLoad(int errorCode) {
-                                    // mAdIsLoading = false;
-                                    super.onAdFailedToLoad(errorCode);
-                                    Log.d("onAdFailedtoLoad ", "" + errorCode);
-                                }
-                            });
-                        }
-                    });
-            }
-            }
-        };
-        t.schedule(task,20000);
-        */
-
-        /*Main_Layout.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
-            public void onSwipeTop() {
-                Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
-                splash_screen splash=new splash_screen();
-                splash.Inserting_records(API_URL,CAT,mdbHelper,context);
+        Log.d("date = ",colummdate);
+        mdbHelper=new News_dbhelper(this);
+        if(API_URL==null){API_URL=" https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";}
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(API_URL,CAT,mdbHelper,context);
+        final Handler handler23 = new Handler();
+        handler23.postDelayed(new Runnable() {
+            @Override public void run() {
+                //Do something after 100ms
+                //Log.d("onCreateView: ",  Income_List.size()+"  "+BarChart_Entries.size()+"  ");
                 thread.run();
-            }
-            public void onSwipeRight() {
-                //onswipeleft();
-                Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeLeft() {
-                //onswiperight();
-                Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeBottom() {
-                Toast.makeText(MainActivity.this, "bottom", Toast.LENGTH_SHORT).show();
-            }
+                mProgressDialog.dismiss();
 
-        });*/
+            }
+        }, 1000);
+
+           // gatherInformation(mdbHelper);
+
+        toolbar.setTitle(CAT);
+        setSupportActionBar(toolbar);
+
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
 
         Main_Layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -359,7 +200,90 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+public void initColumns(){
 
+    if("National".equals(CAT) || TextUtils.isEmpty(CAT)){
+        tablename= National_News_entry.Table_Name;
+        columnttitle=National_News_entry.Column_News_Title;
+        columndesription=National_News_entry.Column_News_Description;
+        columnimage=National_News_entry.Column_News_Image;
+        colummdate=National_News_entry.Column_News_Date;
+        columnurl=National_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=National_News_entry.National_News_id;
+    }
+    if("International".equals(CAT)){
+        tablename= International_News_entry.Table_Name;
+        columnttitle=International_News_entry.Column_News_Title;
+        columndesription=International_News_entry.Column_News_Description;
+        columnimage=International_News_entry.Column_News_Image;
+        colummdate=International_News_entry.Column_News_Date;
+        columnurl=International_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=International_News_entry.International_News_id;
+    }
+    if("Sports".equals(CAT)){
+        tablename= Sports_News_entry.Table_Name;
+        columnttitle=Sports_News_entry.Column_News_Title;
+        columndesription=Sports_News_entry.Column_News_Description;
+        columnimage=Sports_News_entry.Column_News_Image;
+        colummdate=Sports_News_entry.Column_News_Date;
+        columnurl=Sports_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=Sports_News_entry.Sports_News_id;
+    }
+    if("Business".equals(CAT)){
+        tablename= Business_News_entry.Table_Name;
+        columnttitle=Business_News_entry.Column_News_Title;
+        columndesription=Business_News_entry.Column_News_Description;
+        columnimage=Business_News_entry.Column_News_Image;
+        colummdate=Business_News_entry.Column_News_Date;
+        columnurl=Business_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=Business_News_entry.Business_News_id;
+    }
+    if("Technology".equals(CAT)){
+        tablename= Technology_News_entry.Table_Name;
+        columnttitle=Technology_News_entry.Column_News_Title;
+        columndesription=Technology_News_entry.Column_News_Description;
+        columnimage=Technology_News_entry.Column_News_Image;
+        colummdate=Technology_News_entry.Column_News_Date;
+        columnurl=Technology_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=Technology_News_entry.Technology_News_id;
+    }
+    if("Cricket".equals(CAT)){
+        tablename= Cricket_News_entry.Table_Name;
+        columnttitle=Cricket_News_entry.Column_News_Title;
+        columndesription=Cricket_News_entry.Column_News_Description;
+        columnimage=Cricket_News_entry.Column_News_Image;
+        colummdate=Cricket_News_entry.Column_News_Date;
+        columnurl=Cricket_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=Cricket_News_entry.Cricket_News_id;
+    }
+    if("Music".equals(CAT)){
+        tablename= Music_News_entry.Table_Name;
+        columnttitle=Music_News_entry.Column_News_Title;
+        columndesription=Music_News_entry.Column_News_Description;
+        columnimage=Music_News_entry.Column_News_Image;
+        colummdate=Music_News_entry.Column_News_Date;
+        columnurl=Music_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=Music_News_entry.Music_News_id;
+    }
+    if("Gaming".equals(CAT)){
+        tablename= Gaming_News_entry.Table_Name;
+        columnttitle=Gaming_News_entry.Column_News_Title;
+        columndesription=Gaming_News_entry.Column_News_Description;
+        columnimage=Gaming_News_entry.Column_News_Image;
+        colummdate=Gaming_News_entry.Column_News_Date;
+        columnurl=Gaming_News_entry.Column_News_Url;
+        thread.run();
+        //columnid=Gaming_News_entry.Gaming_News_id;
+    }
+
+}
 
     Thread thread= new Thread() {
         @Override
@@ -371,7 +295,7 @@ public class MainActivity extends AppCompatActivity
             try {//News_dbhelper mdbHelper= new News_dbhelper(this);
 
                 SQLiteDatabase db = mdbHelper.getReadableDatabase();
-                SQLiteDatabase dbw=mdbHelper.getWritableDatabase();
+                //SQLiteDatabase dbw=mdbHelper.getWritableDatabase();
 
                 SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
                 queryBuilder.setTables(tablename);
@@ -379,11 +303,13 @@ public class MainActivity extends AppCompatActivity
                         columnimage,
                         columnttitle,
                         columndesription,
+                        colummdate,
                         columnurl
                 };
 
                 Cursor C= db.query(tablename,projection, null, null, null, null, null);
-                Log.d("Table name = ",tablename);
+                int count=C.getCount();
+                Log.d("Cursor ",count+"");
                 //Cursor C = db.rawQuery(" SELECT * FROM " + tablename ,null);
                 // Log.d( "gatherInformation: ",""+C.getCount());
 
@@ -393,7 +319,10 @@ public class MainActivity extends AppCompatActivity
                     //Cursor cursor1 = db.rawQuery(" SELECT * FROM " + tablename + " WHERE " + columnid + "=?", new String[]{String.valueOf(j)});
                     model.setTitle(C.getString(C.getColumnIndex(columnttitle)));
                     model.setDescription(C.getString(C.getColumnIndex(columndesription)));
+                    String url=C.getString(C.getColumnIndex(columnurl));
+                    Log.d( "run: ",url);
                     model.setUrl(C.getString(C.getColumnIndex(columnurl)));
+                    model.setDateString(C.getString(C.getColumnIndex(colummdate)));
                     // byte[] bit=C.getString(C.getColumnIndex(columnimage));
                     //Bitmap bitmapimage= BitmapFactory.decodeByteArray(bit,0,bit.length);
                     model.setimage(C.getString(C.getColumnIndex(columnimage)));
@@ -408,12 +337,15 @@ public class MainActivity extends AppCompatActivity
                 try { RecyclerView recyclerView;
                     recyclerView= findViewById(R.id.recyclerview);
                     recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                    LinearLayoutManager manager=new LinearLayoutManager(MainActivity.this);
+                    manager.setReverseLayout(true);
+                    manager.setStackFromEnd(true);
+                    recyclerView.setLayoutManager(manager);
                     Log.d("size of mModellist ", "" + mModelList.size());
                     mProgressDialog.dismiss();
                     recyclerView.setAdapter(new Adapter(MainActivity.this, mModelList));
                     Main_Layout.setRefreshing(false);
-                    Toast.makeText( MainActivity.this,"News was refreshed\n please refresh if was not displaying", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText( MainActivity.this,"News was refreshed\n please refresh if was not displaying", Toast.LENGTH_SHORT).show();
 
                 }catch (NullPointerException e){e.printStackTrace();}
             }
@@ -490,18 +422,39 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_national) {
             //show national news
             //getSupportActionBar().setTitle("National");
+            /*String URL="https://newsapi.org/v2/top-headlines?source=the-times-of-india&language=en&country=in&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="National";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent i= new Intent(this,MainActivity.class);
-            i.putExtra("URL", " https://newsapi.org/v2/top-headlines?source=the-times-of-india&language=en&country=in&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
+            i.putExtra("URL", "https://newsapi.org/v2/top-headlines?source=the-times-of-india&language=en&country=in&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             i.putExtra("Cat", "National");
             startActivity(i);
 
         } else if (id == R.id.nav_international) {
             //show international news
+            /*String URL="https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="International";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent j=new Intent(this,MainActivity.class );
             j.putExtra("URL", "https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             j.putExtra("Cat", "International");
             startActivity(j);
         } else if (id == R.id.sports) {
+            /*String URL="https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="Sports";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent k=new Intent(this,MainActivity.class );
             k.putExtra("URL", "https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             k.putExtra("Cat", "Sports");
@@ -509,29 +462,65 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_business) {
           // show all news items
+            /*String URL="https://newsapi.org/v1/articles?source=cnbc&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="Business";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent l=new Intent(this,MainActivity.class );
             l.putExtra("URL", "https://newsapi.org/v1/articles?source=cnbc&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             l.putExtra("Cat", "Business");
             startActivity(l);
         } else if (id == R.id.nav_tech) {
+            /*String URL="https://newsapi.org/v1/articles?source=techcrunch&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="Technology";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent m=new Intent(this,MainActivity.class );
             m.putExtra("URL", "https://newsapi.org/v1/articles?source=techcrunch&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             m.putExtra("Cat", "Technology");
             startActivity(m);
         }
         else if (id == R.id.nav_Cricket) {
+            /*String URL="https://newsapi.org/v1/articles?source=espn-cric-info&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="Cricket";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent n=new Intent(this,MainActivity.class );
             n.putExtra("URL", "https://newsapi.org/v1/articles?source=espn-cric-info&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             n.putExtra("Cat", "Cricket");
             startActivity(n);
+
         }
         else if (id == R.id.nav_Music) {
+            /*String URL="https://newsapi.org/v1/articles?source=mtv-news&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="Music";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent o=new Intent(this,MainActivity.class );
             o.putExtra("URL", "https://newsapi.org/v1/articles?source=mtv-news&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             o.putExtra("Cat", "Music");
             startActivity(o);
         }
         else if (id == R.id.nav_Gaming) {
+            /*String URL="https://newsapi.org/v1/articles?source=ign&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6";
+            String CAT="Gaming";
+            this.CAT=CAT;
+            initColumns();
+            splash_screen splash=new splash_screen();
+            splash.Inserting_records(URL,CAT,mdbHelper,context);
+            thread.run();*/
             Intent p=new Intent(this,MainActivity.class );
             p.putExtra("URL", "https://newsapi.org/v1/articles?source=ign&sortBy=top&apiKey=40ab81231e4c43fd925cdc3a0d08f7f6");
             p.putExtra("Cat", "Gaming");

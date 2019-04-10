@@ -9,19 +9,31 @@
     android:layout_marginRight="5dp"
     android:background="@drawable/linearlayout_bg"
     android:layout_marginBottom="8dp">
-    <TextView
+    <LinearLayout
 
-        android:textAppearance="@android:style/TextAppearance.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/item"
-        android:layout_weight="0"
-        android:textStyle="bold"
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_weight="1"
+        android:text="heading"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item"
+        android:textStyle="bold"
         android:textSize="18dp"/>
-
+        <ImageView
+            android:id="@+id/flame"
+            android:src="@drawable/flame"
+            android:layout_gravity="center_vertical"
+            android:layout_width="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="25dp" />
+    </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -38,6 +50,7 @@
             android:layout_marginBottom="5dp"
             />
         <TextView
+            android:maxLines="5"
             android:hint="data"
             android:id="@+id/resp"
             android:layout_width="wrap_content"

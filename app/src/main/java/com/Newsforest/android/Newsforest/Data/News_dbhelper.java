@@ -33,6 +33,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
         +National_News_entry.Column_News_Image+" TEXT ,   "
         +National_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
         +National_News_entry.Column_News_Description+" TEXT NOT NULL, "
+        +National_News_entry.Column_News_Date+" TEXT , "
         +National_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -41,6 +42,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +International_News_entry.Column_News_Image+" TEXT ,   "
                 +International_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +International_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +International_News_entry.Column_News_Date+" TEXT , "
                 +International_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -49,6 +51,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +Business_News_entry.Column_News_Image+"  TEXT ,  "
                 +Business_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +Business_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +Business_News_entry.Column_News_Date+" TEXT , "
                 +Business_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -57,6 +60,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +Technology_News_entry.Column_News_Image+" TEXT ,   "
                 +Technology_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +Technology_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +Technology_News_entry.Column_News_Date+" TEXT , "
                 +Technology_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -65,6 +69,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +Sports_News_entry.Column_News_Image+" TEXT ,   "
                 +Sports_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +Sports_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +Sports_News_entry.Column_News_Date+" TEXT , "
                 +Sports_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -73,6 +78,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +Gaming_News_entry.Column_News_Image+" TEXT ,   "
                 +Gaming_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +Gaming_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +Gaming_News_entry.Column_News_Date+" TEXT , "
                 +Gaming_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -81,6 +87,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +Music_News_entry.Column_News_Image+" TEXT ,   "
                 +Music_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +Music_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +Music_News_entry.Column_News_Date+" TEXT , "
                 +Music_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
 
@@ -90,6 +97,7 @@ String SQL_CREATE_NATIONAL_NEWS_TABLE="CREATE TABLE "+ National_News_entry.Table
                 +Cricket_News_entry.Column_News_Image+" TEXT ,   "
                 +Cricket_News_entry.Column_News_Title+" TEXT PRIMARY KEY, "
                 +Cricket_News_entry.Column_News_Description+" TEXT NOT NULL, "
+                +Cricket_News_entry.Column_News_Date+" TEXT , "
                 +Cricket_News_entry.Column_News_Url+" TEXT NOT NULL); ";
 
         db.execSQL(SQL_CREATE_NATIONAL_NEWS_TABLE);

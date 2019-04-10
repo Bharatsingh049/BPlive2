@@ -19,6 +19,7 @@ public class NewsJungle_contract {
     public final static String Column_News_Description="Description";
     public final static String Column_News_Image="News_Image";
     public final static String Column_News_Url="News_Url";
+    public final static String Column_News_Date="News_Date";
     }
 
     public static final class International_News_entry implements BaseColumns{
@@ -31,6 +32,7 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 
     public static final class Business_News_entry implements BaseColumns{
@@ -43,6 +45,7 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 
     public static final class Sports_News_entry implements BaseColumns{
@@ -55,6 +58,7 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 
     public static final class Technology_News_entry implements BaseColumns{
@@ -67,6 +71,7 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 
     public static final class Cricket_News_entry implements BaseColumns{
@@ -79,6 +84,7 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 
     public static final class Music_News_entry implements BaseColumns{
@@ -91,6 +97,7 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 
     public static final class Gaming_News_entry implements BaseColumns{
@@ -103,5 +110,6 @@ public class NewsJungle_contract {
         public final static String Column_News_Description="Description";
         public final static String Column_News_Image="News_Image";
         public final static String Column_News_Url="News_Url";
+        public final static String Column_News_Date="News_Date";
     }
 }

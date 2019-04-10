@@ -17,6 +17,7 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -81,7 +82,7 @@ public class splash_screen extends AppCompatActivity    {
     //private Cursor cursor,cur;
    // private SQLiteDatabase dbr,dbw ;
 
-    private String tablename,columnttitle,columndesription,columnimage,columnurl;
+    private String tablename,columnttitle,columndesription,columnimage,columnurl,columndate;
     private Bitmap bmp,bmp1;
     private int Id=0;
 
@@ -97,26 +98,30 @@ public class splash_screen extends AppCompatActivity    {
         ForestImage=(ImageView)findViewById(R.id.forest_id);
         TextVersion=(TextView)findViewById(R.id.app_version);
 
-        CAT="National";
-
+        tablename= National_News_entry.Table_Name;
+        columnttitle=National_News_entry.Column_News_Title;
+        columndesription=National_News_entry.Column_News_Description;
+        columnimage=National_News_entry.Column_News_Image;
+        columndate=National_News_entry.Column_News_Date;
+        columnurl=National_News_entry.Column_News_Url;
         context=splash_screen.this;
 
         News_dbhelper dbhelper=new News_dbhelper(this);
        // SQLiteDatabase dbr = dbhelper.getReadableDatabase();
        // SQLiteDatabase dbw = dbhelper.getWritableDatabase();
+     if(TextUtils.isEmpty(CAT)){
+         url=API_URL;
+         OnCreate(dbhelper);
+     }else {
+         Inserting_records(API_URL, CAT, dbhelper, context);
+     }
 
-        Inserting_records(API_URL,CAT,dbhelper,context);
-
-
-        Log.d("Cat before = ",CAT);
+//        Log.d("Cat before = ",CAT);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     //Create an Intent that will start the Menu-Activity.
-                    Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                    mainIntent.putExtra("Cat", CAT);
-                    splash_screen.this.startActivity(mainIntent);
-                    splash_screen.this.finish();
+
                 }
             }, SPLASH_DISPLAY_LENGTH);
 
@@ -136,10 +141,11 @@ public class splash_screen extends AppCompatActivity    {
 
     public void OnCreate(final News_dbhelper help) {
        //final Context context=splash_screen.this;
-      final   List<NewsModel> mModelList1 =new ArrayList<>();
+       final   List<NewsModel> mModelList1 =new ArrayList<>();
 
         //Log.d("NO cursor is not null", cursor.getString(cursor.getColumnIndex(columnttitle)));
         //News_dbhelper helperdb=new News_dbhelper(getApplicationContext());
+
 
         //queryBuilder.setTables(ProfessionalTable.TABLE_NAME);
 
@@ -156,22 +162,37 @@ public class splash_screen extends AppCompatActivity    {
                     try {
                         JSONObject jObject = new JSONObject(response);
                         String status = jObject.getString("status");
-                        String sortby = jObject.getString("sortBy");
+                        //String sortby = jObject.getString("sortBy");
+                        Log.e("Response: ", response.toString());
                         if (status.equals("ok")) {
                             JSONArray jsonArray = jObject.getJSONArray("articles");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonobject = jsonArray.getJSONObject(i);
                                 Log.e("InnerData: ", jsonobject.toString());
                                 NewsModel mDataList = new NewsModel();
+                                String date=jsonobject.getString("publishedAt");
+                                Log.d("onResponse: ",date);
+                                if(!TextUtils.isEmpty(date)  &&  !TextUtils.equals(date,"null")){
+
+                                String[] arr=date.split("-");
+                                Log.d("onResponse: ",arr[0]);
+                                Log.d("onResponse: ",arr[1]);
+                                arr[2]=extractNumber(arr[2]);
+                                Log.d("onResponse: ",arr[2]);
+                                    mDataList.setDateArray(arr);}
+
+
                                 mDataList.setDescription(jsonobject.getString("description"));
                                 mDataList.setTitle(jsonobject.getString("title"));
                                 mDataList.setUrl(jsonobject.getString("url"));
+
                                 mDataList.setimage(jsonobject.getString("urlToImage"));
                                 mModelList1.add(mDataList);
                               if(i==jsonArray.length()-1){
                                   Log.d("size of mModellist ",""+mModelList1.size());
                                   Continue_Oncreate(help,mModelList1);
                               }
+                                Log.d("size of mModellist ",""+mModelList1.size());
                             }
 
                         }
@@ -224,7 +245,7 @@ public class splash_screen extends AppCompatActivity    {
             };
 
             //*********To Retry sending*********************************************
-            jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(8000,
+            jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             RequestQueue queue = Volley.newRequestQueue(context);
@@ -263,6 +284,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnimage,
             columnttitle,
             columndesription,
+            columndate,
             columnurl
     };
     //  Cursor cursor = dbr.query(tablename, projection, null, null, null, null, null);
@@ -286,7 +308,8 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
 
 
             final Cursor cursor = dbr.query(tablename, projection, null, null, null, null, null);
-
+            int count=cursor.getCount();
+            Log.d("size of mModellist ",""+count);
             cursor.moveToFirst();
             if (cursor.getCount()==0){
                 Insert_in_a_row(i,mModelList1,help);
@@ -303,17 +326,6 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
                 Log.d("fist cursor.getCount()=",""+cur1.getCount());
                 if(cur1.getCount()>0) {
 
-
-
-                  /*  Cursor cur= dbr.query(tablename,projection,null,null,null,null,null);
-                    cur.moveToLast();
-                    int Id = cur.getInt(cur.getColumnIndex(columnid)) + 1;
-                    //Insert_in_a_row(i,Id,mModelList1,help);
-                    Log.d("size of mModellist ", "" + mModelList1.size());
-                    Insert_in_a_row(i, Id, mModelList1, help);
-                    cursor.moveToLast();
-                    Log.d("scnd cursor.getCount()=", "" + cur.getCount());
-                   */
 
                 if (cur1.getCount() <=20) {
 
@@ -398,15 +410,26 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
 
         }
 
+        if(context==splash_screen.this) {
+
+            Intent mainIntent = new Intent(context, MainActivity.class);
+            mainIntent.putExtra("Cat", CAT);
+            context.startActivity(mainIntent);
+            splash_screen.this.finish();
+        }
+
     }catch (Exception e){e.printStackTrace();}
+
 }
 
     public void Inserting_records(final String url1, String cat,News_dbhelper help,Context context){
         //Log.d( "API_URL ",url1);
          url=url1;
         CAT=cat;
-        Log.d( "CAT ",CAT);
-        if(context==null){this.context=splash_screen.this;}else {this.context=context;}
+       // Log.d( "CAT ",CAT);
+        if(context==null){
+            this.context=splash_screen.this;
+        }else {this.context=context;}
         //if(mdbHelp==null){mdbHelper= new News_dbhelper(getApplicationContext());}
 
         if("National".equals(cat)){
@@ -414,6 +437,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=National_News_entry.Column_News_Title;
             columndesription=National_News_entry.Column_News_Description;
             columnimage=National_News_entry.Column_News_Image;
+            columndate=National_News_entry.Column_News_Date;
             columnurl=National_News_entry.Column_News_Url;
             //columnid=National_News_entry.National_News_id;
         }
@@ -422,6 +446,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=International_News_entry.Column_News_Title;
             columndesription=International_News_entry.Column_News_Description;
             columnimage=International_News_entry.Column_News_Image;
+            columndate=International_News_entry.Column_News_Date;
             columnurl=International_News_entry.Column_News_Url;
             //columnid=International_News_entry.International_News_id;
         }
@@ -430,6 +455,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=Sports_News_entry.Column_News_Title;
             columndesription=Sports_News_entry.Column_News_Description;
             columnimage=Sports_News_entry.Column_News_Image;
+            columndate=Sports_News_entry.Column_News_Date;
             columnurl=Sports_News_entry.Column_News_Url;
             //columnid=Sports_News_entry.Sports_News_id;
         }
@@ -438,6 +464,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=Business_News_entry.Column_News_Title;
             columndesription=Business_News_entry.Column_News_Description;
             columnimage=Business_News_entry.Column_News_Image;
+            columndate=Business_News_entry.Column_News_Date;
             columnurl=Business_News_entry.Column_News_Url;
             //columnid=Business_News_entry.Business_News_id;
         }
@@ -446,6 +473,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=Technology_News_entry.Column_News_Title;
             columndesription=Technology_News_entry.Column_News_Description;
             columnimage=Technology_News_entry.Column_News_Image;
+            columndate=Technology_News_entry.Column_News_Date;
             columnurl=Technology_News_entry.Column_News_Url;
             //columnid=Technology_News_entry.Technology_News_id;
         }
@@ -454,6 +482,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=Cricket_News_entry.Column_News_Title;
             columndesription=Cricket_News_entry.Column_News_Description;
             columnimage=Cricket_News_entry.Column_News_Image;
+            columndate=Cricket_News_entry.Column_News_Date;
             columnurl=Cricket_News_entry.Column_News_Url;
             //columnid=Cricket_News_entry.Cricket_News_id;
         }
@@ -462,6 +491,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=Music_News_entry.Column_News_Title;
             columndesription=Music_News_entry.Column_News_Description;
             columnimage=Music_News_entry.Column_News_Image;
+            columndate=Music_News_entry.Column_News_Date;
             columnurl=Music_News_entry.Column_News_Url;
             //columnid=Music_News_entry.Music_News_id;
         }
@@ -470,6 +500,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
             columnttitle=Gaming_News_entry.Column_News_Title;
             columndesription=Gaming_News_entry.Column_News_Description;
             columnimage=Gaming_News_entry.Column_News_Image;
+            columndate=Gaming_News_entry.Column_News_Date;
             columnurl=Gaming_News_entry.Column_News_Url;
             //columnid=Gaming_News_entry.Gaming_News_id;
         }
@@ -491,6 +522,7 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
         values.put(columnimage, mModelList1.get(i).getimage());
         values.put(columnttitle, mModelList1.get(i).getTitle());
         values.put(columndesription,mModelList1.get(i).getDescription());
+        values.put(columndate,mModelList1.get(i).getDateString());
         values.put(columnurl, mModelList1.get(i).getUrl());
         long currentRow_ID = dbw.insert(tablename, null, values);
         if (Id != currentRow_ID) {
@@ -505,6 +537,21 @@ public void Continue_Oncreate(final News_dbhelper help, final List<NewsModel> mM
 
     }
 
+     public static String extractNumber(final String str) {
+        if(str == null || str.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        boolean found = false;
+        for(char c : str.toCharArray()){
+            if(Character.isDigit(c)){
+                sb.append(c);
+                found = true;
+            } else if(found){
+                // If we already found a digit before and this char is not a digit, stop looping
+                break;
+            }
+        }
+        return sb.toString();
+    }
 
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

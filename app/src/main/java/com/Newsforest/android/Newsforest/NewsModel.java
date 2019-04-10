@@ -1,6 +1,9 @@
 package com.Newsforest.android.Newsforest;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
+
+import java.util.Date;
 
 /**
  * Created by Bharat on 4/1/2017.
@@ -11,6 +14,8 @@ public class NewsModel {
     public String title;
     public String url;
     public String image2url;
+    private String[] DateArray=new String[3];
+    private String DateString;
     public Bitmap Imagebitmap;
 
     public NewsModel() {
@@ -23,6 +28,27 @@ public class NewsModel {
         this.url = url;
         this.Description = Description;
         this.image2url=image2url;
+    }
+
+    public void setDateArray(String[] date){
+        this.DateArray[0]=date[0];
+        this.DateArray[1]=date[1];
+        this.DateArray[2]=date[2];
+        this.DateString=date[0]+"-"+date[1]+"-"+date[2];
+    }
+
+    public void setDateString(String dateString) {
+        this.DateString = dateString;
+if (!TextUtils.isEmpty(dateString)){
+        this.DateArray=dateString.split("-");}
+    }
+
+    public String[] getDateArray() {
+        return DateArray;
+    }
+
+    public String getDateString() {
+        return DateString;
     }
 
     public String getDescription() {
